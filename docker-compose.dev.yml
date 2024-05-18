@@ -1,0 +1,12 @@
+services:
+  playground:
+    tty: true
+    restart: always
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - playground:/workspace
+
+volumes:
+  playground:
