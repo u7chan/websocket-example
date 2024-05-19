@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
     }
   }
   return NextResponse.json(
-    { message: "Invalid request paramete" },
+    { message: "Invalid request parameter" },
     {
       status: 400,
     },
