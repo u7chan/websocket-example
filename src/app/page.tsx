@@ -75,36 +75,30 @@ export default function Page() {
               onChange={(e) => setInput(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
-            <button
-              type="button"
-              onClick={sendMessage}
-              className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 disabled:opacity-75"
-            >
-              Send
-            </button>
+            <Button label="Send" onClick={sendMessage} />
           </div>
-
-          <button
-            type="button"
-            onClick={handleStartAudioStream}
-            disabled={activeStream}
-            className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 disabled:opacity-75"
-          >
-            Start
-          </button>
-          <button
-            type="button"
-            onClick={handleStopAudioStream}
-            disabled={!activeStream}
-            className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 disabled:opacity-75"
-          >
-            Stop
-          </button>
+          <Button label="Start" disabled={activeStream} onClick={handleStartAudioStream} />
+          <Button label="Stop" disabled={!activeStream} onClick={handleStopAudioStream} />
         </>
       )}
     </main>
   );
 }
+
+const Button = ({
+  label,
+  disabled,
+  onClick,
+}: { label: string; disabled?: boolean; onClick?: () => void }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    disabled={disabled}
+    className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 disabled:opacity-75"
+  >
+    {label}
+  </button>
+);
 
 const Loading = () => (
   <div role="status">
