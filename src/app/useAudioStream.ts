@@ -5,7 +5,7 @@ type Params = {
   timeSlice?: number;
 };
 
-export const useAudioStream = ({ onBlobStream, timeSlice = 500 }: Params) => {
+export const useAudioStream = ({ onBlobStream, timeSlice }: Params) => {
   const [activeStream, setActiveStream] = useState(false);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);

@@ -9,8 +9,10 @@ export default function Page() {
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const handleSendBlob = (blob: Blob) => {
+    // console.log("#blob", blob);
     if (socket) {
-      socket.send(blob);
+      // socket.send(blob);
+      blobToDownloadFile(blob, "test");
     }
   };
 
@@ -142,3 +144,13 @@ const Loading = () => (
     <span className="sr-only">Loading...</span>
   </div>
 );
+
+const blobToDownloadFile = (blob: Blob, fileName: string) => {
+  const audioBlob = new Blob([blob], { type: "audio/webm;codecs=opus" });
+  const anchor = document.createElement("a");
+  const url = window.URL.createObjectURL(audioBlob);
+  anchor.href = url;
+  anchor.download = `${fileName}.webm`;
+  anchor.click();
+  window.URL.revokeObjectURL(url);
+};
