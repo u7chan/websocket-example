@@ -1,6 +1,12 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
-export const useAudioStream = (sendBlob: (blob: Blob) => void, timeSlice = 500) => {
+type Params = {
+  onBlobStream: (blob: Blob) => void;
+  timeSlice?: number;
+};
+
+export const useAudioStream = ({ onBlobStream, timeSlice = 500 }: Params) => {
+  const [activeStream, setActiveStream] = useState(false);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const captureUserAudio = () => {
@@ -10,17 +16,18 @@ export const useAudioStream = (sendBlob: (blob: Blob) => void, timeSlice = 500) 
       mediaStreamRef.current = stream;
       mediaRecorder.start(timeSlice);
       mediaRecorder.addEventListener("dataavailable", (blobEvent: BlobEvent) => {
-        sendBlob(blobEvent.data);
+        onBlobStream(blobEvent.data);
       });
     });
   };
-  const startStream = () => {
+  const handleStartAudioStream = () => {
     captureUserAudio();
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current?.start();
     }
+    setActiveStream(true);
   };
-  const stopStream = () => {
+  const handleStopAudioStream = () => {
     if (mediaStreamRef.current) {
       // biome-ignore lint/complexity/noForEach: <explanation>
       mediaStreamRef.current.getTracks().forEach((track) => {
@@ -29,10 +36,12 @@ export const useAudioStream = (sendBlob: (blob: Blob) => void, timeSlice = 500) 
         }
       });
     }
+    setActiveStream(false);
   };
 
   return {
-    startStream,
-    stopStream,
+    activeStream,
+    handleStartAudioStream,
+    handleStopAudioStream,
   };
 };
