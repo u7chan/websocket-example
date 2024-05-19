@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useAudioStream } from "react-audio-stream";
+import { useAudioStream } from "./useAudioStream";
 
 export default function Page() {
   const [messages, setMessages] = useState<string[]>([]);
