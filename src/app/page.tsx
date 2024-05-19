@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useAudioStream } from "./useAudioStream";
 
 export default function Page() {
@@ -62,18 +62,11 @@ export default function Page() {
             ))}
           </div>
           <div className="mt-6 mb-6 flex gap-2 items-center">
-            <label
-              htmlFor="default-input"
-              className="block text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Messages
-            </label>
-            <input
-              type="text"
+            <TextInput
               id="default-input"
+              label="Message"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
             <Button label="Send" onClick={sendMessage} />
           </div>
@@ -84,6 +77,34 @@ export default function Page() {
     </main>
   );
 }
+
+const TextInput = ({
+  id,
+  label,
+  value,
+  onChange,
+}: {
+  id?: string;
+  label?: string;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+}) => (
+  <>
+    <label
+      htmlFor="default-input"
+      className="block text-sm font-medium text-gray-900 dark:text-white"
+    >
+      {label}
+    </label>
+    <input
+      type="text"
+      id={id}
+      value={value}
+      onChange={onChange}
+      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    />
+  </>
+);
 
 const Button = ({
   label,
