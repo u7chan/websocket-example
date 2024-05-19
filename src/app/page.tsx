@@ -10,14 +10,18 @@ export default function Page() {
 
   const handleSendBlob = (blob: Blob) => {
     // console.log("#blob", blob);
+    // blobToDownloadFile(blob, "test"); // ファイル出力して検証 (timeSlice: undefined にして確認)
     if (socket) {
       // socket.send(blob);
-      blobToDownloadFile(blob, "test");
     }
+    postFileUpload("/api/audio", blob).then(() => {
+      console.log("Audio file uploaded");
+    });
   };
 
   const { activeStream, handleStartAudioStream, handleStopAudioStream } = useAudioStream({
     onBlobStream: handleSendBlob,
+    timeSlice: undefined, // undefined を指定することで音声データのストリームが分割されなくなる
   });
 
   useEffect(() => {
@@ -153,4 +157,15 @@ const blobToDownloadFile = (blob: Blob, fileName: string) => {
   anchor.download = `${fileName}.webm`;
   anchor.click();
   window.URL.revokeObjectURL(url);
+};
+
+const postFileUpload = async (url: string, blob: Blob) => {
+  const file = new File([blob], "");
+  const body = new FormData();
+  body.append("targetFile", file);
+  await fetch(url, {
+    method: "POST",
+    cache: "no-store",
+    body,
+  });
 };
