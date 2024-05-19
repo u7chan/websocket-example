@@ -12,9 +12,16 @@ const handler = (
     wss.on("connection", (ws) => {
       console.log("Client connected");
 
-      ws.on("message", (message) => {
-        console.log("Received:", message.toString());
-        ws.send(`Server received: ${message} ${new Date().toISOString()}`);
+      ws.on("message", (data, isBinary) => {
+        const bufferSize = !Array.isArray(data) ? Buffer.byteLength(data) : data.length;
+        console.log(`bufferSize: ${bufferSize}`);
+        if (!isBinary) {
+          // text
+          const message = data.toString();
+          ws.send(`[${new Date().toISOString()}][RECV]: ${message}`);
+        } else {
+          // binary
+        }
       });
 
       ws.on("close", () => {
